@@ -6,7 +6,6 @@ from flask_restful import Resource, reqparse
 from ..app import db, login_manager
 from ..models import User
 
-auth_bp = Blueprint('auth', __name__)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -52,7 +51,3 @@ class ProtectedResource(Resource):
     def get(self):
         return {'message': f'Hello, {current_user.username}! You are accessing a protected resource.'}, 200
  
-
-@auth_bp.route('/')
-def login():
-    return "Hello! Log In"

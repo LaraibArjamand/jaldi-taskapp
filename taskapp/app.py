@@ -27,11 +27,10 @@ with app.app_context():
     db.create_all()
 
 # register routes
-from .blueprints import (LoginResource, LogoutResource, ProtectedResource,
-                         RegisterResource, auth_bp)
+from .resources import (LoginResource, LogoutResource, ProtectedResource,
+                        RegisterResource)
 
 api.add_resource(RegisterResource, "/register")
 api.add_resource(LoginResource, "/login")
 api.add_resource(LogoutResource, "/logout")
 api.add_resource(ProtectedResource, "/")
-app.register_blueprint(auth_bp, url_prefix='/')
