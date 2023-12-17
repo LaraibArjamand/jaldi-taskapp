@@ -1,8 +1,29 @@
 version: '1' 
 services:
+  db:
+    restart: always
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - '32000:3306'
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - db-net
   web:
     build: .
     ports:
      - "5001:5001"
     volumes:
      - .:/app
+    links:
+      - db:db
+    depends_on:
+      - db
+    networks:
+      - db-net
+
+networks:
+  db-net:
+    driver: bridge
