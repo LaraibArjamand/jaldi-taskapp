@@ -17,10 +17,9 @@ services:
      - "5001:5001"
     volumes:
      - .:/app
-    links:
-      - db:db
     depends_on:
-      - db
+      db:
+        condition: service_completed_successfully
     networks:
       - db-net
 
