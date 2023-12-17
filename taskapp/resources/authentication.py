@@ -16,9 +16,15 @@ class RegisterResource(Resource):
         username = data.get('username')
         password = data.get('password')
 
+        # verify input is not None
+        if username is None or password is None:
+            return {"message": "One of the username or password is empty"}
+        
+        # check if user already exists
         if User.query.filter_by(username=username).first():
             return {'message': 'Username already exists'}, 400
 
+        # store user in the db
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         new_user = User(username=username, password=hashed_password)
         db.session.add(new_user)
@@ -41,13 +47,14 @@ class LoginResource(Resource):
         return {'message': 'Invalid username or password'}, 401
 
 class LogoutResource(Resource):
-    @login_required
     def post(self):
-        logout_user()
-        return {'message': 'Logged out successfully'}, 200
+        if current_user.is_authenticated:
+            logout_user()
+            return {'message': 'Logged out successfully'}, 200
+        return {'message': 'You need to login first'}, 401
 
 class ProtectedResource(Resource):
-    @login_required
+    decorators = [login_required]
     def get(self):
         return {'message': f'Hello, {current_user.username}! You are accessing a protected resource.'}, 200
  
