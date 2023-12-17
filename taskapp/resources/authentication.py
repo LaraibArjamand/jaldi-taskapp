@@ -1,9 +1,8 @@
-from flask import Blueprint, request
-from flask.views import View
+from flask import request
 from flask_login import current_user, login_required, login_user, logout_user
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
 
-from ..app import db, login_manager
+from ..app import bcrypt, db, login_manager
 from ..models import User
 
 
@@ -20,7 +19,8 @@ class RegisterResource(Resource):
         if User.query.filter_by(username=username).first():
             return {'message': 'Username already exists'}, 400
 
-        new_user = User(username=username, password=password)
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        new_user = User(username=username, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
 
@@ -34,7 +34,7 @@ class LoginResource(Resource):
 
         user = User.query.filter_by(username=username).first()
 
-        if user and user.verify_password(password):
+        if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
             return {'message': 'Logged in successfully'}, 200
 
