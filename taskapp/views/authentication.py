@@ -23,14 +23,14 @@ class UserRegisterView(MethodView):
             return response
         
         if User.query.filter_by(username=username).first():
-            return response_message("Username already exists"), 400
+            return response_message("ERROR: Username already exists"), 400
 
         hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
         new_user = User(username=username, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
 
-        return response_message("User registered successfully"), 201
+        return response_message("INFO: User registered successfully"), 201
 
 
 class UserLoginView(MethodView):
@@ -47,9 +47,9 @@ class UserLoginView(MethodView):
 
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
-            return response_message("Logged in successfully"), 200
+            return response_message("INFO: Logged in successfully"), 200
 
-        return response_message("Invalid username or password"), 401
+        return response_message("ERROR: Invalid username or password"), 401
 
 
 class UserLogoutView(MethodView):
@@ -57,5 +57,5 @@ class UserLogoutView(MethodView):
     def post(self):
         if current_user.is_authenticated:
             logout_user()
-            return response_message("Logged out successfully"), 200
-        return response_message("You need to login first"), 401
+            return response_message("INFO: Logged out successfully"), 200
+        return response_message("ERROR: You need to login first"), 401

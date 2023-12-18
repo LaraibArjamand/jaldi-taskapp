@@ -24,7 +24,7 @@ class TaskItemView(MethodView):
         if current_user.is_authenticated:
             task = self._get_task(id)
             return task.to_json()
-        return response_message("You need to login first"), 401
+        return response_message("ERROR: You are not logged in"), 401
 
     def patch(self, id):
         if current_user.is_authenticated:
@@ -32,7 +32,7 @@ class TaskItemView(MethodView):
             task.update_from_json(request.json)
             db.session.commit()
             return task.to_json()
-        return response_message("You need to login first"), 401
+        return response_message("ERROR: You are not logged in"), 401
 
     def delete(self, id):
         if current_user.is_authenticated:
@@ -40,7 +40,7 @@ class TaskItemView(MethodView):
             db.session.delete(task)
             db.session.commit()
             return "", 204
-        return response_message("You need to login first"), 401
+        return response_message("ERROR: You are not logged in"), 401
 
 
 class TaskView(MethodView):
@@ -52,7 +52,7 @@ class TaskView(MethodView):
         if current_user.is_authenticated:
             tasks = self.model.query.filter_by(user_id=current_user.id).all()
             return [task.to_json() for task in tasks]
-        return response_message("You need to login first"), 401
+        return response_message("ERROR: You are not logged in"), 401
 
     def post(self):
         if current_user.is_authenticated:
@@ -69,4 +69,4 @@ class TaskView(MethodView):
             db.session.add(task)
             db.session.commit()
             return task.to_json()
-        return response_message("You need to login first"), 401
+        return response_message("ERROR: You are not logged in"), 401
