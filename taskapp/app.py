@@ -9,8 +9,8 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 # configure mysql database
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DATABASE_URI")
-app.config["SECRET_KEY"] = environ.get('SECRET_KEY')
+app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("DATABASE_URI")
+app.config["SECRET_KEY"] = environ.get("SECRET_KEY")
 db = SQLAlchemy(app)
 
 # instantiate package for encryption
@@ -18,7 +18,7 @@ bcrypt = Bcrypt(app)
 
 # add config for flask_login
 login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+login_manager.login_view = "login"
 
 
 # setup database tables

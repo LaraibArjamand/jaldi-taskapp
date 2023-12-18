@@ -4,6 +4,7 @@ from flask_login import current_user, login_user, logout_user
 
 from ..app import bcrypt, db, login_manager
 from ..models import User
+from .utils import response_message, validate_user_info
 
 
 @login_manager.user_loader
@@ -15,43 +16,40 @@ class UserRegisterView(MethodView):
 
     def post(self):
         data = request.json
-        username = data.get('username')
-        password = data.get('password')
-
-        if username is None:
-            return {"message": "username is empty"}, 400
-        if password is None:
-            return {"message": "password is empty"}, 400  
+        username = data.get("username")
+        password = data.get("password")
+        
+        if response := validate_user_info(username, password):
+            return response
+        
         if User.query.filter_by(username=username).first():
-            return {'message': 'Username already exists'}, 400
+            return response_message("Username already exists"), 400
 
-        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
         new_user = User(username=username, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
 
-        return {'message': 'User registered successfully'}, 201
+        return response_message("User registered successfully"), 201
 
 
 class UserLoginView(MethodView):
 
     def post(self):
         data = request.json
-        username = data.get('username')
-        password = data.get('password')
+        username = data.get("username")
+        password = data.get("password")
 
-        if username is None:
-            return {"message": "username is empty"}, 400
-        if password is None:
-            return {"message": "password is empty"}, 400
+        if response := validate_user_info(username, password):
+            return response
 
         user = User.query.filter_by(username=username).first()
 
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
-            return {'message': 'Logged in successfully'}, 200
+            return response_message("Logged in successfully"), 200
 
-        return {'message': 'Invalid username or password'}, 401
+        return response_message("Invalid username or password"), 401
 
 
 class UserLogoutView(MethodView):
@@ -59,5 +57,5 @@ class UserLogoutView(MethodView):
     def post(self):
         if current_user.is_authenticated:
             logout_user()
-            return {'message': 'Logged out successfully'}, 200
-        return {'message': 'You need to login first'}, 401
+            return response_message("Logged out successfully"), 200
+        return response_message("You need to login first"), 401

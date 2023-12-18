@@ -11,8 +11,8 @@ class Task(db.Model):
     is_complete = db.Column(db.Boolean, default=False)
 
     # assosciate tasks with user
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user = db.relationship('User', backref=db.backref('tasks', lazy=True))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    user = db.relationship("User", backref=db.backref("tasks", lazy=True))
 
     def __repr__(self) -> str:
         return f"{self.id} - {self.title}"
