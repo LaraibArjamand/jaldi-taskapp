@@ -23,11 +23,7 @@ from taskapp.models import Task, User
 with app.app_context():
     db.create_all()
 
-from taskapp import views
+from taskapp.views import auth_bp, task_bp
 
-app.add_url_rule("/register", view_func=views.UserRegisterView.as_view("register"))
-app.add_url_rule("/login", view_func=views.UserLoginView.as_view("login"))
-app.add_url_rule("/logout", view_func=views.UserLogoutView.as_view("logout"))
-app.add_url_rule("/task/<int:id>", view_func=views.TaskItemView.as_view("task-item", Task))
-app.add_url_rule("/task/", view_func=views.TaskView.as_view("task", Task))
-
+app.register_blueprint(auth_bp, url_prefix='/auth')
+app.register_blueprint(task_bp, url_prefix='/task')
