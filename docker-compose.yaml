@@ -12,14 +12,18 @@ services:
     networks:
       - db-net
   api:
-    build: .
+    restart: always
+    build:
+      context: ./taskapp
+      dockerfile: Dockerfile
     ports:
      - "5001:5001"
     volumes:
-     - .:/app
+     - ./taskapp:/taskapp
+    env_file:
+      - ./.env
     depends_on:
-      db:
-        condition: service_completed_successfully
+      - db
     networks:
       - db-net
 
