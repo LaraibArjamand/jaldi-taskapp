@@ -13,9 +13,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DATABASE_URI")
 app.config["SECRET_KEY"] = environ.get('SECRET_KEY')
 db = SQLAlchemy(app)
 
-# configure rest api
-api = Api(app)
-
 # instantiate package for encryption
 bcrypt = Bcrypt(app)
 
@@ -25,16 +22,17 @@ login_manager.login_view = 'login'
 
 
 # setup database tables
-from .models import User
+from .models import Task, User
 
 with app.app_context():
     db.create_all()
 
 # register routes
-from .resources import (LoginResource, LogoutResource, ProtectedResource,
-                        RegisterResource)
+from . import views
 
-api.add_resource(RegisterResource, "/register")
-api.add_resource(LoginResource, "/login")
-api.add_resource(LogoutResource, "/logout")
-api.add_resource(ProtectedResource, "/")
+app.add_url_rule("/register", view_func=views.UserRegisterView.as_view("register"))
+app.add_url_rule("/login", view_func=views.UserLoginView.as_view("login"))
+app.add_url_rule("/logout", view_func=views.UserLogoutView.as_view("logout"))
+app.add_url_rule("/task/<int:id>", view_func=views.TaskItemView.as_view("task-item", Task))
+app.add_url_rule("/task/", view_func=views.TaskView.as_view("task", Task))
+
