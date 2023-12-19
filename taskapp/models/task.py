@@ -19,6 +19,7 @@ class Task(db.Model):
     
     def to_json(self):
         return json.dumps({
+            "id": self.id,
             "title": self.title,
             "description": self.description,
             "is_complete": self.is_complete,

@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import request
 from flask.views import MethodView
 from flask_login import current_user
 
