@@ -22,7 +22,7 @@ from taskapp.models import Task, User
 with app.app_context():
     db.create_all()
 
-from taskapp.views import auth_bp, task_bp
+from taskapp.views import task_bp, user_bp
 
-app.register_blueprint(auth_bp, url_prefix='/auth')
-app.register_blueprint(task_bp, url_prefix='/task')
+app.register_blueprint(user_bp, url_prefix='/users')
+app.register_blueprint(task_bp, url_prefix='/tasks')

@@ -13,10 +13,10 @@ class Config(object):
 class TestConfig(object):
     HOST = "http://127.0.0.1:5001"
 
-    REGISTER_ENDPOINT = f"{HOST}/auth/register"
-    LOGIN_ENDPOINT = f"{HOST}/auth/login"
-    LOGOUT_ENDPOINT = f"{HOST}/auth/logout"
-    TASK_ENDPOINT = f"{HOST}/task"
+    REGISTER_ENDPOINT = f"{HOST}/users/register"
+    LOGIN_ENDPOINT = f"{HOST}/users/login"
+    LOGOUT_ENDPOINT = f"{HOST}/users/logout"
+    TASK_ENDPOINT = f"{HOST}/tasks"
 
     TEST_USER = "Bill"
     TEST_PASSWORD = "12345"
