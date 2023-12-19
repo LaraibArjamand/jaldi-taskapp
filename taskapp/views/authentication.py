@@ -22,7 +22,7 @@ class UserRegisterView(MethodView):
         if response := validate_user_info(username, password):
             return response
         
-        if User.query.filter_by(username=username).first_or_404():
+        if User.query.filter_by(username=username).first():
             return response_message("ERROR: Username already exists"), 400
 
         hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
@@ -43,13 +43,20 @@ class UserLoginView(MethodView):
         if response := validate_user_info(username, password):
             return response
 
-        user = User.query.filter_by(username=username).first_or_404()
+        user = User.query.filter_by(username=username).first()
 
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
             return response_message("INFO: Logged in successfully"), 200
 
         return response_message("ERROR: Invalid username or password"), 401
+
+    def delete(self):
+        username = request.json.get("username")
+        user = User.query.filter_by(username=username).first()
+        db.session.delete(user)
+        db.session.commit()
+        return response_message("SUCCESS: USER REMOVED")
 
 
 class UserLogoutView(MethodView):
