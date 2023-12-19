@@ -25,12 +25,12 @@
 
 These steps will set up the api, install the required dependencies and run the tests. Access the api at http://localhost:5000 once the setup is complete. 
 #### Endpoint Details:
-###### Users
+#### Users
 * **POST /users/register** : User registration
 * **POST /users/login** : User login 
 * **POST /users/logout** : User logout
 
-###### Task
+#### Task
 * **GET /tasks** : Get list of tasks 
 * **POST /tasks** : Create new task
 * **GET /tasks/<task_id>** :Retrieve task with id "task_id"
