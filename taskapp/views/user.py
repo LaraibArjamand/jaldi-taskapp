@@ -4,7 +4,7 @@ from flask_login import current_user, login_user, logout_user
 
 from ..app import bcrypt, db, login_manager
 from ..models import User
-from .utils import response_message, validate_user_info
+from .utils import response_message, validate_user_details, validate_user_input
 
 
 @login_manager.user_loader
@@ -19,7 +19,7 @@ class UserRegisterView(MethodView):
         username = data.get("username")
         password = data.get("password")
 
-        if response := validate_user_info(username, password):
+        if response := validate_user_input(username, password):
             return response
 
         if User.query.filter_by(username=username).first():
@@ -40,16 +40,16 @@ class UserLoginView(MethodView):
         username = data.get("username")
         password = data.get("password")
 
-        if response := validate_user_info(username, password):
+        if response := validate_user_input(username, password):
             return response
 
         user = User.query.filter_by(username=username).first()
 
-        if user and bcrypt.check_password_hash(user.password, password):
-            login_user(user)
-            return response_message("INFO: Logged in successfully"), 200
-
-        return response_message("ERROR: Invalid username or password"), 401
+        if response := validate_user_details(user, password):
+            return response
+        
+        login_user(user)
+        return response_message("INFO: Logged in successfully"), 200
 
     def delete(self):
         username = request.json.get("username")
