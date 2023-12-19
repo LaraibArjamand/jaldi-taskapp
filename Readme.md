@@ -2,7 +2,7 @@
 
 ### Clone Taskapp Repository
 1. Clone this repository to your local machine:
-    `git clone https://github.com/your-username/taskapp.git`
+    `git clone https://github.com/LaraibArjamand/taskapp.git`
 2. Navigate to the project directory:
     `cd taskapp`
 
