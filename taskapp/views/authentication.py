@@ -12,16 +12,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-class BaseUserView:
-
-    def __init__(self, model):
-        self.model = model
-
-    def get_user(self, username):
-        return self.model.query.filter_by(username=username).first_or_404()
-
-
-class UserRegisterView(MethodView, BaseUserView):
+class UserRegisterView(MethodView):
 
     def post(self):
         data = request.json
@@ -31,7 +22,7 @@ class UserRegisterView(MethodView, BaseUserView):
         if response := validate_user_info(username, password):
             return response
         
-        if self.get_user(username):
+        if User.query.filter_by(username=username).first_or_404():
             return response_message("ERROR: Username already exists"), 400
 
         hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
@@ -42,7 +33,7 @@ class UserRegisterView(MethodView, BaseUserView):
         return response_message("INFO: User registered successfully"), 201
 
 
-class UserLoginView(MethodView, BaseUserView):
+class UserLoginView(MethodView):
 
     def post(self):
         data = request.json
@@ -52,7 +43,7 @@ class UserLoginView(MethodView, BaseUserView):
         if response := validate_user_info(username, password):
             return response
 
-        user = self.get_user(username)
+        user = User.query.filter_by(username=username).first_or_404()
 
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
@@ -61,7 +52,7 @@ class UserLoginView(MethodView, BaseUserView):
         return response_message("ERROR: Invalid username or password"), 401
 
 
-class UserLogoutView(MethodView, BaseUserView):
+class UserLogoutView(MethodView):
 
     def post(self):
         if current_user.is_authenticated:

@@ -9,9 +9,9 @@ task_bp = Blueprint('task', __name__)
 # task_item_bp = Blueprint('task_item', __name__)
 
 # register auth endpoints
-auth_bp.add_url_rule("/register", view_func=UserRegisterView.as_view("register", User))
-auth_bp.add_url_rule("/login", view_func=UserLoginView.as_view("login", User))
-auth_bp.add_url_rule("/logout", view_func=UserLogoutView.as_view("logout", User))
+auth_bp.add_url_rule("/register", view_func=UserRegisterView.as_view("register"))
+auth_bp.add_url_rule("/login", view_func=UserLoginView.as_view("login"))
+auth_bp.add_url_rule("/logout", view_func=UserLogoutView.as_view("logout"))
 
 
 # register task endpoints
