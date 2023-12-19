@@ -16,7 +16,7 @@ def headers():
 
 
 @pytest.fixture
-def session(headers):
+def session():
     session = requests.Session()
     return session
 
