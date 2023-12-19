@@ -18,10 +18,10 @@ class UserRegisterView(MethodView):
         data = request.json
         username = data.get("username")
         password = data.get("password")
-        
+
         if response := validate_user_info(username, password):
             return response
-        
+
         if User.query.filter_by(username=username).first():
             return response_message("ERROR: Username already exists"), 400
 

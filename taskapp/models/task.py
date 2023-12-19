@@ -16,7 +16,7 @@ class Task(db.Model):
 
     def __repr__(self) -> str:
         return f"{self.id} - {self.title}"
-    
+
     def to_json(self):
         return json.dumps({
             "id": self.id,

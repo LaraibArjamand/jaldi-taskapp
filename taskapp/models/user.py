@@ -12,7 +12,7 @@ class User(db.Model, UserMixin):
 
     def __repr__(self) -> str:
         return f"{self.id} - {self.username}"
-    
+
     def to_json(self):
         return json.dumps({
             "id": self.id,
