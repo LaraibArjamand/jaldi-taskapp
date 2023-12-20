@@ -2,9 +2,9 @@
 
 ### Clone Taskapp Repository
 1. Clone this repository to your local machine:
-    `https://github.com/LaraibArjamand/jaldi-taskapp.git`
+    `git clone https://github.com/LaraibArjamand/jaldi-taskapp.git`
 2. Navigate to the project directory:
-    `cd taskapp`
+    `cd jaldi-taskapp`
 
 
 ### Building and Running the App
