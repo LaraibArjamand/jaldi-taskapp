@@ -10,7 +10,7 @@
 ### Building and Running the App
 1. Build the project and install dependencies:
     `docker-compose build`
-2. Once the build is successful, start the application:
+2. Once the build is successful, start the application (This might take while):
     `docker-compose up -d`
 
 ### Running Tests
