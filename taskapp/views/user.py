@@ -36,6 +36,8 @@ class UserRegisterView(MethodView):
 class UserLoginView(MethodView):
 
     def post(self):
+        if current_user.is_authenticated:
+            return response_message("ERROR: You are already logged in")
         data = request.json
         username = data.get("username")
         password = data.get("password")
