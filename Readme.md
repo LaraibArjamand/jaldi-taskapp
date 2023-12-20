@@ -2,15 +2,15 @@
 
 ### Clone Taskapp Repository
 1. Clone this repository to your local machine:
-    `https://github.com/LaraibArjamand/jaldi-taskapp.git`
+    `git clone https://github.com/LaraibArjamand/jaldi-taskapp.git`
 2. Navigate to the project directory:
-    `cd taskapp`
+    `cd jaldi-taskapp`
 
 
 ### Building and Running the App
 1. Build the project and install dependencies:
     `docker-compose build`
-2. Once the build is successful, start the application:
+2. Once the build is successful, start the application (This might take while):
     `docker-compose up -d`
 
 ### Running Tests
